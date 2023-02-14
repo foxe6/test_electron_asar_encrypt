@@ -1,0 +1,61 @@
+<html>
+<head>
+    <script>
+        let {ipcRenderer, shell} = require('electron');
+        let http = require('http');
+        let https = require('https');
+        let fs = require('fs');
+        let openExternal = shell.openExternal;
+        (function(cb, cb2) {
+            ipcRenderer.on('set_localStorage', function(event, arg) {
+                cb2&&cb2(arg);
+            })
+            ipcRenderer.send('get_localStorage')
+            ipcRenderer.on('get_localStorage', function(event, arg) {
+                window._localStorage2 = arg;
+                let argp = new Proxy(arg, {
+                    set: function (target, key, value) {
+                        target[key] = value;
+                        ipcRenderer.send('set_localStorage', JSON.stringify(window._localStorage2));
+                        return true;
+                    },
+                    deleteProperty(target, propKey) {
+                        delete target[propKey];
+                        return true;
+                    }
+                });
+                window.localStorage2 = argp;
+                cb&&cb();
+            })
+        })(function () {
+            //callback after init localStorage2
+        },function () {
+            //callback after set localStorage2
+        });
+        delete window.module;
+    </script>
+    <title>test</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <style>
+        html, body{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+        }
+    </style>
+</head>
+<body>
+<script>
+$(document).ready(function(){
+    $("body").append("OK");
+});
+</script>
+</body>
+</html>
