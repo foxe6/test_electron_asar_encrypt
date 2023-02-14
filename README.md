@@ -1,4 +1,4 @@
-based on [toyobayashi/electron-asar-encrypt-demo](https://github.com/toyobayashi/electron-asar-encrypt-demo) but easier
+based on [toyobayashi/electron-asar-encrypt-demo](https://github.com/toyobayashi/electron-asar-encrypt-demo) but easier to develop app
 
 # 给 Electron 应用加密源码
 
